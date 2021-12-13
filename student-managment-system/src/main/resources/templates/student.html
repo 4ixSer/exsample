@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GetStudents</title>
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none" href="/">
+                <svg aria-label="Bootstrap" class="bi me-2" height="32" role="img" width="40">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a class="nav-link px-2 link-secondary" href="#">Home</a></li>
+                <li><a class="nav-link px-2 link-dark" href="#">Features</a></li>
+                <li><a class="nav-link px-2 link-dark" href="#">Pricing</a></li>
+                <li><a class="nav-link px-2 link-dark" href="#">FAQs</a></li>
+                <li><a class="nav-link px-2 link-dark" href="#">About</a></li>
+            </ul>
+
+            <div class="col-md-3 text-end">
+                <button class="btn btn-outline-primary me-2" type="button">Login</button>
+                <button class="btn btn-primary" type="button">Sign-up</button>
+            </div>
+        </header>
+    </div>
+    <div class="row">
+        <div class="col-md-3"> id - <span th:text="${student.id}"></span></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">First - <span th:text="${student.firstName}"></span></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">Last - <span th:text="${student.lastName}"></span></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">email - <span th:text="${student.email}"></span></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            Action
+            <a class="btn btn-primary" th:href="@{/students/edit/{id}(id=${student.id})}">Update</a>
+            <a class="btn btn-danger" th:href="@{/students/delete/{id}(id=${student.id})}">Delete</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
