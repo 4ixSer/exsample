@@ -1,0 +1,94 @@
+version: "3.7"
+
+networks:
+  sender-network:
+    name: sender-network
+  recipient-network:
+    name: recipient-network
+  monitoring:
+    name: monitoring
+  db-network:
+    name: db-network
+
+services:
+  rabbitmq:
+    container_name: rabbit
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - sender-network
+      - recipient-network
+  micro-sender:
+    container_name: micro-sender
+    build: ../micro-sender
+    image: micro-sender_img
+    ports:
+      - "9000:9000"
+    networks:
+      - sender-network
+    depends_on:
+      - micro-recipient
+      - rabbitmq
+  micro-recipient:
+    container_name: micro-recipient
+    build: ../micro-recipient
+    image: micro-recipient_img
+    ports:
+      - "9001:9001"
+    networks:
+      - recipient-network
+    depends_on:
+      - rabbitmq
+  service-collector:
+    container_name: service-collector
+    build: ../micro-collector
+    image: service-collector_img
+    ports:
+      - "9002:9002"
+    networks:
+      - recipient-network
+      - db-network
+    depends_on:
+      - micro-recipient
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - monitoring
+  prometheus:
+    ports:
+      - '9090:9090'
+    volumes:
+      - './prometheusConf:/etc/prometheus/'
+    container_name: prometheus
+    image: prom/prometheus
+    networks:
+      - sender-network
+      - recipient-network
+      - monitoring
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+    ports:
+      - "5432:5432"
+    networks:
+      - db-network
+  micro-visualizer:
+    container_name: micro-visualizer
+    build: ../micro-visualizer
+    image: micro-visualizer_img
+    ports:
+      - "9005:9005"
+    networks:
+      - db-network
