@@ -1,0 +1,16 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.gss.grpc;
+
+message MessageRequest {
+  string message = 1;
+}
+
+message MessageResponse {
+  string message = 1;
+}
+
+service MessageService {
+  rpc ping(MessageRequest) returns (MessageResponse);
+}
