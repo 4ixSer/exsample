@@ -1,0 +1,15 @@
+{
+  "namespace": "com.gss.kafka.avro.model",
+  "type": "record",
+  "name": "Message",
+ "fields": [
+    {
+      "name": "message",
+      "type": "string"
+    },
+    {
+      "name": "time",
+      "type": "string"
+    }
+  ]
+}
